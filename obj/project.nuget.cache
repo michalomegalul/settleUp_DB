@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Bky1uSbeV9F5ehrleL+eww0WUBLYo3WKvZDXgtMQu+omlU1JSFQ5IbKriFaVYpNNW2y+6QWWCyqPw+tzaePLEg==",
+  "dgSpecHash": "7tAHWGMbAR8npfsDg06ZGPBtWfKfy2SF5V3NQ834VwpCva+bfLHKejFn8ZUq8Hanib3j4dtp6O9r9zq4fdvyjw==",
   "success": true,
   "projectFilePath": "C:\\Users\\dog56\\source\\repos\\dluznik3\\dluznik3\\dluznik3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dog56\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\dog56\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\dog56\\.nuget\\packages\\bcrypt.net\\0.1.0\\bcrypt.net.0.1.0.nupkg.sha512",
     "C:\\Users\\dog56\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\dog56\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\dog56\\.nuget\\packages\\microsoft.data.sqlclient\\5.1.0\\microsoft.data.sqlclient.5.1.0.nupkg.sha512",
@@ -45,5 +46,16 @@
     "C:\\Users\\dog56\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
     "C:\\Users\\dog56\\.nuget\\packages\\system.windows.extensions\\6.0.0\\system.windows.extensions.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'BCrypt.Net 0.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "BCrypt.Net",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

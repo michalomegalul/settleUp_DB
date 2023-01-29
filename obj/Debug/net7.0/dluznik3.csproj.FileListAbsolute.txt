@@ -48,3 +48,4 @@ C:\Users\dog56\source\repos\dluznik3\dluznik3\obj\Debug\net7.0\refint\dluznik3.d
 C:\Users\dog56\source\repos\dluznik3\dluznik3\obj\Debug\net7.0\dluznik3.pdb
 C:\Users\dog56\source\repos\dluznik3\dluznik3\obj\Debug\net7.0\dluznik3.genruntimeconfig.cache
 C:\Users\dog56\source\repos\dluznik3\dluznik3\obj\Debug\net7.0\ref\dluznik3.dll
+C:\Users\dog56\source\repos\dluznik3\dluznik3\bin\Debug\net7.0\BCrypt.Net.dll

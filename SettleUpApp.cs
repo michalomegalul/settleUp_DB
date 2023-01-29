@@ -6,7 +6,7 @@ using System.Transactions;
 
 class SettleUpApp
 {
-    private string _connectionString = @"Data Source=(local);Initial Catalog=dluhy_db;User ID=user;Password=owo;Encrypt=false;Trusted_Connection=True;";
+    private readonly string _connectionString = @"Data Source=(local);Initial Catalog=dluhy_db;User ID=user;Password=owo;Encrypt=false;Trusted_Connection=True;";
 
     public void CreateTransaction(int giverId, int receiverId, decimal amount)
     {
@@ -19,18 +19,15 @@ class SettleUpApp
             Date = DateTime.Now
         };
 
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            connection.Open();
-            var command = new SqlCommand("INSERT INTO dbo.Transactions (GID, RID, Amount, Date) VALUES (@giverId, @receiverId, @amount, @date)", connection);
-            command.Parameters.AddWithValue("@giverId", transaction.GID);
-            command.Parameters.AddWithValue("@receiverId", transaction.RID);
-            command.Parameters.AddWithValue("@amount", transaction.Amount);
-            command.Parameters.AddWithValue("@date", transaction.Date);
-            command.ExecuteNonQuery();
-        }
-    }
-
+        using var connection = new SqlConnection(_connectionString);
+        connection.Open();
+        var command = new SqlCommand("INSERT INTO dbo.Transactions (GID, RID, Amount, Date) VALUES (@giverId, @receiverId, @amount, @date)", connection);
+        command.Parameters.AddWithValue("@giverId", transaction.GID);
+        command.Parameters.AddWithValue("@receiverId", transaction.RID);
+        command.Parameters.AddWithValue("@amount", transaction.Amount);
+        command.Parameters.AddWithValue("@date", transaction.Date);
+        command.ExecuteNonQuery();
+    }//works
     public List<Transactions> GetTransactionsForUser(int userId)
     {
         // Retrieve all transactions for the specified user
@@ -42,26 +39,23 @@ class SettleUpApp
             var command = new SqlCommand("SELECT * FROM dbo.Transactions WHERE GID = @userId OR RID = @userId", connection);
             command.Parameters.AddWithValue("@userId", userId);
 
-            using (var reader = command.ExecuteReader())
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                while (reader.Read())
+                var transaction = new Transactions()
                 {
-                    var transaction = new Transactions()
-                    {
-                        ID = reader.GetInt32(0),
-                        GID = reader.GetInt32(1),
-                        RID = reader.GetInt32(2),
-                        Amount = reader.GetDecimal(3),
-                        Date = reader.GetDateTime(4)
-                    };
-                    transactions.Add(transaction);
-                }
+                    ID = reader.GetInt32(0),
+                    GID = reader.GetInt32(1),
+                    RID = reader.GetInt32(2),
+                    Amount = reader.GetDecimal(3),
+                    Date = reader.GetDateTime(4)
+                };
+                transactions.Add(transaction);
             }
         }
 
         return transactions;
-    }
-
+    }//works
     public decimal GetBalanceForUser(int userId)
     {
         // Retrieve all transactions for the specified user
@@ -69,18 +63,23 @@ class SettleUpApp
 
         using (var connection = new SqlConnection(_connectionString))
         {
-            connection.Open(); var command = new SqlCommand("SELECT SUM(CASE WHEN GID = @userId THEN Amount ELSE -Amount END) FROM dbo.Transactions WHERE GID = @userId OR RID = @userId", connection);
+            connection.Open(); var command = new SqlCommand("SELECT SUM(CASE WHEN GID = @userId THEN Amount ELSE 0-Amount END) FROM dbo.Transactions WHERE GID = @userId OR RID = @userId", connection);
             command.Parameters.AddWithValue("@userId", userId);
 
-            using (var reader = command.ExecuteReader())
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
             {
                 balance = reader.GetDecimal(0);
             }
+            else
+            {
+                balance = 0;
+            }
+
         }
 
         return balance;
-    }
-
+    }//works
     public void SettleUpBalances(int userId1, int userId2)
     {
         // Retrieve the balances for the two users
@@ -93,13 +92,114 @@ class SettleUpApp
         // If the difference is negative, swap the user IDs
         if (difference < 0)
         {
-            int temp = userId1;
-            userId1 = userId2;
-            userId2 = temp;
+            (userId2, userId1) = (userId1, userId2);
             difference = -difference;
         }
 
         // Create a new transaction to transfer the difference in balances
         CreateTransaction(userId1, userId2, difference);
+    }//works
+    public void CreateUser(string username, string password)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+
+            connection.Open();
+            var command = new SqlCommand("INSERT INTO dbo.Users (username, password) VALUES (@username, @password)", connection);
+            var hashedPassword = PEncryption.HashPassword(password);
+            command.Parameters.AddWithValue("@username", username);
+            if (hashedPassword != "invalid password")
+            {
+                command.Parameters.AddWithValue("@password", hashedPassword);
+                command.ExecuteNonQuery();
+            }
+            else
+            {
+                Console.WriteLine("Invalid password");
+            }
+            
+
+        }
+    }//works
+    public User GetUserByUsername(string username)
+    {
+        User user = null;
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("SELECT * FROM dbo.Users WHERE username = @username", connection);
+            command.Parameters.AddWithValue("@username", username);
+
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    user = new User()
+                    {
+                        ID = reader.GetInt32(0),
+                        username = reader.GetString(1),
+                        password = reader.GetString(2)
+                    };
+                }
+            }
+        }
+        return user;
+    }//works
+    public User GetUserById(int userId)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("SELECT * FROM dbo.Users WHERE ID = @userId", connection);
+            command.Parameters.AddWithValue("@userId", userId);
+
+            using var reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                return new User()
+                {
+                    ID = reader.GetInt32(0),
+                    username = reader.GetString(1),
+                    password = reader.GetString(2)
+                };
+            }
+        }
+
+        return null;
+    }//works
+    public void DeleteUser(int userId)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("DELETE FROM dbo.Users WHERE ID = @userId", connection);
+            command.Parameters.AddWithValue("@userId", userId);
+            command.ExecuteNonQuery();
+        }
+    }//works
+    public void CreateGroup(string name)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("INSERT INTO dbo.Groups (name) VALUES (@name)", connection);
+            command.Parameters.AddWithValue("@name", name);
+            command.ExecuteNonQuery();
+        }
+    }//in progress
+    
+    public bool Login(string username, string password)
+    {
+        {
+            var user = GetUserByUsername(username);
+            if (user == null)
+            {
+                return false;
+            }
+            return PEncryption.VerifyPassword(password, user.password);
+        }
+
+
+
     }
 }
