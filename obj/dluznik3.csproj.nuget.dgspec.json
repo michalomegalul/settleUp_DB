@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dog56\\source\\repos\\dluznik3\\dluznik3\\dluznik3.csproj": {}
+    "C:\\Users\\dog56\\source\\repos\\settleUp_DB\\dluznik3.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dog56\\source\\repos\\dluznik3\\dluznik3\\dluznik3.csproj": {
+    "C:\\Users\\dog56\\source\\repos\\settleUp_DB\\dluznik3.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dog56\\source\\repos\\dluznik3\\dluznik3\\dluznik3.csproj",
+        "projectUniqueName": "C:\\Users\\dog56\\source\\repos\\settleUp_DB\\dluznik3.csproj",
         "projectName": "dluznik3",
-        "projectPath": "C:\\Users\\dog56\\source\\repos\\dluznik3\\dluznik3\\dluznik3.csproj",
+        "projectPath": "C:\\Users\\dog56\\source\\repos\\settleUp_DB\\dluznik3.csproj",
         "packagesPath": "C:\\Users\\dog56\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dog56\\source\\repos\\dluznik3\\dluznik3\\obj\\",
+        "outputPath": "C:\\Users\\dog56\\source\\repos\\settleUp_DB\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,9 +49,73 @@
               "target": "Package",
               "version": "[0.1.0, )"
             },
+            "Microsoft.AspNetCore": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authorization": {
+              "target": "Package",
+              "version": "[7.0.3, )"
+            },
+            "Microsoft.AspNetCore.Hosting.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Hosting.Server.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Http": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Extensions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            },
+            "Microsoft.AspNetCore.JsonPatch": {
+              "target": "Package",
+              "version": "[7.0.3, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "Microsoft.AspNetCore.Mvc.RazorPages": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "Microsoft.AspNetCore.Routing": {
+              "target": "Package",
+              "version": "[2.2.2, )"
+            },
+            "Microsoft.AspNetCore.Routing.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.WebUtilities": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.Data.SqlClient": {
               "target": "Package",
               "version": "[5.1.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Graph": {
+              "target": "Package",
+              "version": "[4.53.0, )"
             }
           },
           "imports": [
@@ -66,6 +130,9 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

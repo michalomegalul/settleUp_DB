@@ -1,8 +1,9 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
-using dluznik3;
 using System.Collections.Generic;
 using System.Transactions;
+using dluznik3.Module;
+using dluznik3.Security;
 
 class SettleUpApp
 {
@@ -177,17 +178,6 @@ class SettleUpApp
             command.ExecuteNonQuery();
         }
     }//works
-    public void CreateGroup(string name)
-    {
-        using (var connection = new SqlConnection(_connectionString))
-        {
-            connection.Open();
-            var command = new SqlCommand("INSERT INTO dbo.Groups (name) VALUES (@name)", connection);
-            command.Parameters.AddWithValue("@name", name);
-            command.ExecuteNonQuery();
-        }
-    }//in progress
-    
     public bool Login(string username, string password)
     {
         {
@@ -201,5 +191,89 @@ class SettleUpApp
 
 
 
-    }
+    }//works
+    public void CreateGroup(string name)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("INSERT INTO dbo.Groups (name) VALUES (@name)", connection);
+            command.Parameters.AddWithValue("@name", name);
+            command.ExecuteNonQuery();
+        }
+    }//in progress
+    
+
+    public void AddUserToGroup(int userId, int groupId)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("INSERT INTO dbo.GroupUsers (GID, UID) VALUES (@groupId, @userId)", connection);
+            command.Parameters.AddWithValue("@groupId", groupId);
+            command.Parameters.AddWithValue("@userId", userId);
+            command.ExecuteNonQuery();
+        }
+    }//works not implemented
+    public List<Group> GetGroupsForUser(int userId)
+    {
+        var groups = new List<Group>();
+
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("SELECT * FROM dbo.Groups WHERE ID IN (SELECT GID FROM dbo.GroupUsers WHERE UID = @userId)", connection);
+            command.Parameters.AddWithValue("@userId", userId);
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var group = new Group()
+                {
+                    ID = reader.GetInt32(0),
+                    name = reader.GetString(1)
+                };
+                groups.Add(group);
+            }
+        }
+
+        return groups;
+    }//works not implemented
+    public List<User> GetUsersForGroup(int groupId)
+    {
+        var users = new List<User>();
+
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("SELECT * FROM dbo.Users WHERE ID IN (SELECT UID FROM dbo.GroupUsers WHERE GID = @groupId)", connection);
+            command.Parameters.AddWithValue("@groupId", groupId);
+
+            using var reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                var user = new User()
+                {
+                    ID = reader.GetInt32(0),
+                    username = reader.GetString(1),
+                    password = reader.GetString(2)
+                };
+                users.Add(user);
+            }
+        }
+
+        return users;
+    }//works not implemented
+    public void DeleteGroup(int groupId)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            connection.Open();
+            var command = new SqlCommand("DELETE FROM dbo.Groups WHERE ID = @groupId", connection);
+            command.Parameters.AddWithValue("@groupId", groupId);
+            command.ExecuteNonQuery();
+        }
+    }//works not implemented
+        
+
 }
